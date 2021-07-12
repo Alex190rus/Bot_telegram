@@ -1,6 +1,6 @@
 import telebot
 from config_bot import keys, TOKEN
-from extensions import ConvertionExcepttion, CryptoConverter
+from extensions_bot import ConvertionExcepttion, CryptoConverter
 bot = telebot.TeleBot(TOKEN)
 
 
@@ -9,7 +9,8 @@ def help(message: telebot.types.Message):
     text = 'приветствую уважаемый пользователь, чтобы начать работу, введите команду боту в следующем формате:' \
            '\n <имя вашей валюты>' \
            '<в какую валюту перевести>' \
-           '<колличество переводимой валюты>\n для того чтобы посмотреть список валют доступных к конвертированию ' \
+           '<колличество переводимой валюты>\n ' \
+           '"пример: доллар рубль 100" \nдля того чтобы посмотреть список доступных к конвертированию валют,' \
            'введите команду /values'
     bot.reply_to(message, text)
 
@@ -27,7 +28,8 @@ def convert(message: telebot.types.Message):
         values = message.text.split(' ')
 
         if len(values) != 3:
-            raise ConvertionExcepttion('Неверное число параметров')
+            raise ConvertionExcepttion('Неверное число параметров, введите команду /help, '
+                                       'для уточнения правильности ввода')
 
         quote, base, amount = values
         total_base = CryptoConverter.convert(quote, base, amount)
