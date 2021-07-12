@@ -14,17 +14,20 @@ class CryptoConverter:
         try:
             quote_ticker = keys[quote]
         except KeyError:
-            raise ConvertionExcepttion(f'Не удалось обработать валюту: {quote}')
+            raise ConvertionExcepttion(f'Отсутствует возможность обработать валюту: "{quote}",'
+                                       f'проверьте корректность ввода')
 
         try:
             base_ticker = keys[base]
         except KeyError:
-            raise ConvertionExcepttion(f'Не удалось обработать валюту: {base}')
+            raise ConvertionExcepttion(f'Отсутствует возможность обработать валюту: "{base}", '
+                                       f'проверьте корректность ввода')
 
         try:
             amount = float(amount)
         except ValueError:
-            raise ConvertionExcepttion(f'Не удалось обработать количество: {amount}')
+            raise ConvertionExcepttion(f'Не удалось обработать количество: "{amount}",'
+                                       f'проверьте корректность ввода')
 
         r = requests.get(f'https://min-api.cryptocompare.com/data/price?fsym={quote_ticker}&tsyms={base_ticker}')
         total_base = json.loads(r.content)[keys[base]]
